@@ -1,4 +1,4 @@
-#include "kraken/range_map.hpp"
+#include "kraken/range_map.h"
 #include <stdio.h>
 
 #define EXPECT_VALUE( rm, k ,v ) \
@@ -11,7 +11,7 @@
 
 int test_range_map1(){
 
-  Kraken::RangeMap<int, int, 0> rm;
+  Kraken::RangeMap<int, int> rm;
 
   rm.set(0, 10, 1, [](int a ,int b ){ return b; } );
 
@@ -29,7 +29,7 @@ int test_range_map1(){
 
 int test_range_map2(){
 
-  Kraken::RangeMap<int, int, 0> rm;
+  Kraken::RangeMap<int, int> rm;
 
   rm.set(0, 10, 1);
   rm.set(2,  5, 2);
@@ -43,7 +43,7 @@ int test_range_map2(){
 
 int test_range_map3(){
 
-  Kraken::RangeMap<int, int, 0> rm;
+  Kraken::RangeMap<int, int> rm;
   Kraken::RangeSet<int> rs = Kraken::RangeSet<int>();
   rs.set(4,  7, true);
   rs.set(12, 15, true);
@@ -63,8 +63,8 @@ int test_range_map3(){
   return 0;
 }
 
-Kraken::RangeMap<int, int, 0> get_rm(){
-  Kraken::RangeMap<int, int, 0> rm1;
+Kraken::RangeMap<int, int> get_rm(){
+  Kraken::RangeMap<int, int> rm1;
   rm1.set( 4, 5, 1);
   rm1.set( 7, 10, 2);
   return rm1;
@@ -72,8 +72,8 @@ Kraken::RangeMap<int, int, 0> get_rm(){
 
 int test_range_map4(){
 
-  Kraken::RangeMap<int, int, 0> rm2 = get_rm();
-  Kraken::RangeMap<int, int, 0> rm3 = rm2;
+  Kraken::RangeMap<int, int> rm2 = get_rm();
+  Kraken::RangeMap<int, int> rm3 = rm2;
   
  
   return 0;

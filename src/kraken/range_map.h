@@ -15,12 +15,12 @@ struct overwrite : public std::binary_function<V,V,V>
 };
 
 
-template< typename K, typename V, V NIL >
+template< typename K, typename V>
 class RangeMap;
 
-#include "kraken/range_set.hpp"
+#include "kraken/range_set.h"
 
-template< typename K, typename V, V NIL >
+template< typename K, typename V>
 class RangeMap {
 
   class Iterator;
@@ -45,7 +45,9 @@ class RangeMap {
     V _value;
 
     static Node* _insert( Node* node,  K min, K max, V value, std::function<V(V,V)> merger);
-    static void _each( Node* node, std::function<void(const K&, const K&, const V&)> fn );
+    static void _each( Node* node, const std::function<void(const K&, const K&, const V&)>& fn );
+    static void _each_value( Node* node, const std::function<void(const V&)>& fn );
+
 
     friend class RangeMap;
     friend class Iterator;
@@ -83,14 +85,15 @@ public:
 // static overwrite<V>* ow = new overwrite();
 
   RangeMap();
-  RangeMap(const RangeMap<K,V,NIL>&);
-  RangeMap(RangeMap<K,V,NIL>&&);
+  RangeMap(const RangeMap<K,V>&);
+  RangeMap(RangeMap<K,V>&&);
   virtual ~RangeMap();
   V operator[](const K& key) const;
   void set( K, K, V, std::function<V(V,V)> = overwrite<V>() );
   void set( K, V, std::function<V(V,V)> = overwrite<V>() );
   void set( RangeSet<K>&, V, std::function<V(V,V)> = overwrite<V>() );
-  void each( std::function<void(const K&, const K&, const V&)> );
+  void each( const std::function<void(const K&, const K&, const V&)>& ) const;
+  void each_value( const std::function<void(const V&)>& ) const;
   Iterator begin();
   inline Iterator end() const { return nullptr; };
 
@@ -99,21 +102,22 @@ protected:
 //  static Node* RNMPInsert( Node* node,  K min, K max, V value, std::function<V(V,V)> merger );
 //  static RangeMap<K,V,NIL>::Node* RNMPInsert2( RangeMapNode<K,V>* node, RangeMapNode<K,bool>* node2, V value, std::function<V(V,V)> merger );
   Node* _node;
+  V _nil;
 };
 
-template< typename K, typename V , V NIL >
-RangeMap<K,V,NIL>::Node::~Node(){
+template< typename K, typename V  >
+RangeMap<K,V>::Node::~Node(){
   if( _left != nullptr ) delete _left;
   if( _right != nullptr ) delete _right;
 };
 
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::Node::Node(K min, K max, V value) : _min(min), _max(max), _value(value), _left(nullptr), _right(nullptr) {
+template< typename K, typename V >
+RangeMap<K,V>::Node::Node(K min, K max, V value) : _min(min), _max(max), _value(value), _left(nullptr), _right(nullptr) {
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::Node::Node(const RangeMap<K,V,NIL>::Node * node) : _min(node->_min), _max(node->_max), _value(node->_value){
+template< typename K, typename V>
+RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), _max(node->_max), _value(node->_value){
   std::cout << "Clone Node";
   if( node->_left == nullptr ){
     _left = nullptr;
@@ -127,8 +131,8 @@ RangeMap<K,V,NIL>::Node::Node(const RangeMap<K,V,NIL>::Node * node) : _min(node-
   }
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::Node::Node(const RangeMap<K,V,NIL>::Node &node) : _min(node._min), _max(node._max), _value(node._value){
+template< typename K, typename V>
+RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node &node) : _min(node._min), _max(node._max), _value(node._value){
   std::cout << "Clone Node";
   if( node._left == nullptr ){
     _left = nullptr;
@@ -142,12 +146,12 @@ RangeMap<K,V,NIL>::Node::Node(const RangeMap<K,V,NIL>::Node &node) : _min(node._
   }
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::RangeMap() : _node(nullptr) {
+template< typename K, typename V>
+RangeMap<K,V>::RangeMap() : _node(nullptr), _nil(0) {
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::RangeMap(const RangeMap<K,V,NIL> &rm){
+template< typename K, typename V>
+RangeMap<K,V>::RangeMap(const RangeMap<K,V> &rm){
   if( rm._node == nullptr ){
     _node = nullptr;
   }else{
@@ -155,8 +159,8 @@ RangeMap<K,V,NIL>::RangeMap(const RangeMap<K,V,NIL> &rm){
   }
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::RangeMap(RangeMap<K,V,NIL> &&rm){
+template< typename K, typename V>
+RangeMap<K,V>::RangeMap(RangeMap<K,V> &&rm){
   if( rm._node == nullptr ){
     _node = nullptr;
   }else{
@@ -165,14 +169,14 @@ RangeMap<K,V,NIL>::RangeMap(RangeMap<K,V,NIL> &&rm){
   }
 };
 
-template< typename K, typename V, V NIL >
-RangeMap<K,V,NIL>::~RangeMap(){
+template< typename K, typename V>
+RangeMap<K,V>::~RangeMap(){
   if( _node != nullptr ) delete _node;
 };
 
-template< typename K, typename V, V NIL >
-V RangeMap<K,V,NIL>::operator[]( const K& key) const{
-  RangeMap<K,V,NIL>::Node* node = _node;
+template< typename K, typename V>
+V RangeMap<K,V>::operator[]( const K& key) const{
+  RangeMap<K,V>::Node* node = _node;
   while( node != nullptr ){
     if( key < node->_min ){
       node = node->_left;
@@ -182,13 +186,13 @@ V RangeMap<K,V,NIL>::operator[]( const K& key) const{
       return node->_value;
     }
   }
-  return NIL;
+  return _nil;
 };
 
-template< typename K, typename V, V NIL >
-typename RangeMap<K,V,NIL>::Node* RangeMap<K,V,NIL>::Node::_insert( Node* node, K min, K max, V value, std::function<V(V,V)> merger ){
+template< typename K, typename V>
+typename RangeMap<K,V>::Node* RangeMap<K,V>::Node::_insert( Node* node, K min, K max, V value, std::function<V(V,V)> merger ){
   if( nullptr == node ){
-    return new typename RangeMap<K,V,NIL>::Node( min, max, value);
+    return new typename RangeMap<K,V>::Node( min, max, value);
   }else if( max < node->_min ){
     node->_left = _insert( node->_left, min, max, value, merger );
     return node;
@@ -213,8 +217,8 @@ typename RangeMap<K,V,NIL>::Node* RangeMap<K,V,NIL>::Node::_insert( Node* node, 
   }
 }
 
-template< typename K, typename V, V NIL >
-void RangeMap<K,V,NIL>::Node::_each( RangeMap<K,V,NIL>::Node *node, std::function<void(const K&, const K&, const V&)> fn ){
+template< typename K, typename V >
+void RangeMap<K,V>::Node::_each( RangeMap<K,V>::Node *node, const std::function<void(const K&, const K&, const V&)>& fn ) {
   if( node == nullptr ){
     return ;
   }else{
@@ -224,23 +228,39 @@ void RangeMap<K,V,NIL>::Node::_each( RangeMap<K,V,NIL>::Node *node, std::functio
   }
 }
 
-template< typename K, typename V, V NIL >
-void RangeMap<K,V, NIL >::each( std::function<void(const K&, const K&, const V&)> fn ){
-  RangeMap<K,V,NIL>::Node::_each( _node, fn );
+template< typename K, typename V >
+void RangeMap<K,V>::Node::_each_value( RangeMap<K,V>::Node *node, const std::function<void(const V&)>& fn ) {
+  if( node == nullptr ){
+    return ;
+  }else{
+    fn( node->value() );
+    _each_value( node->_left, fn);
+    _each_value( node->_right, fn);
+  }
 }
 
-template< typename K, typename V, V NIL >
-void RangeMap<K,V, NIL >::set( K min , K max, V value, std::function<V(V,V)> merger ){
+template< typename K, typename V>
+void RangeMap<K,V>::each( const std::function<void(const K&, const K&, const V&)>& fn ) const {
+  RangeMap<K,V>::Node::_each( _node, fn );
+}
+
+template< typename K, typename V>
+void RangeMap<K,V>::each_value( const std::function<void(const V&)>& fn ) const {
+  RangeMap<K,V>::Node::_each_value( _node, fn );
+}
+
+template< typename K, typename V>
+void RangeMap<K,V>::set( K min , K max, V value, std::function<V(V,V)> merger ){
   _node = Node::_insert( _node, min , max, value, merger );
 }
 
-template< typename K, typename V, V NIL >
-void RangeMap<K,V, NIL>::set( K mm , V value, std::function<V(V,V)> merger ){
+template< typename K, typename V>
+void RangeMap<K,V>::set( K mm , V value, std::function<V(V,V)> merger ){
   this->set(mm, mm, value, merger);
 }
 
-template< typename K, typename V, V NIL >
-void RangeMap<K,V, NIL >::set( RangeSet<K>& set, V value, std::function<V(V,V)> merger ){
+template< typename K, typename V>
+void RangeMap<K,V>::set( RangeSet<K>& set, V value, std::function<V(V,V)> merger ){
   set.each( [value, merger, this]( const K &min, const K &max, const V &cond ){
     if( cond ){
       this->set( min, max, value, merger );

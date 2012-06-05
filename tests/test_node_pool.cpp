@@ -1,5 +1,7 @@
 
 #include "kraken/node.h"
+#include "kraken/node/map.h"
+#include "kraken/base.h"
 #include <functional>
 #include <algorithm>
 #include <list>
@@ -35,7 +37,12 @@ int main(int argc, char** argv){
 
   Kraken::Node::Pool *pool = new Kraken::Node::Pool();
   RealNode *node = pool->make<RealNode>();
+  Kraken::Node::Map *map = pool->make<Kraken::Node::Map>();
   node->add( pool->make<RealNode>() )->add( pool->make<RealNode>() );
+  node->add( map );
+  map->set( 10, 20 , pool->make<RealNode>() );
+  map->set( 10, 20 , pool->make<RealNode>() );
+  map->set( 15, 25 , pool->make<RealNode>() );
   pool->make<RealNode>();
   pool->make<RealNode>();
 //  pool->gc( node );
