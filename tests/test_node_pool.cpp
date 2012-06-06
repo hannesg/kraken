@@ -12,6 +12,7 @@ std::list<Kraken::Node*> _nodes;
 
 public:
   virtual void each_ref( const std::function<void(const Kraken::Node*)>& ) const;
+  virtual const Kraken::Node::Result* traverse( const std::string ) const;
   RealNode* add(Kraken::Node* node);
   ~RealNode();
 
@@ -20,6 +21,9 @@ public:
 void RealNode::each_ref( const std::function<void(const Kraken::Node*)>& fn ) const {
   std::for_each( _nodes.begin(), _nodes.end(), fn);
   return ;
+}
+const Kraken::Node::Result* RealNode::traverse( const std::string ) const {
+  return nullptr;
 }
 
 RealNode::~RealNode(){
@@ -45,7 +49,9 @@ int main(int argc, char** argv){
   map->set( 15, 25 , pool->make<RealNode>() );
   pool->make<RealNode>();
   pool->make<RealNode>();
-//  pool->gc( node );
+  pool->make<Kraken::Node::Map>()->set(10,15, pool->make<RealNode>());
+
+  pool->gc( node );
 
   pool->clear();
   delete pool;

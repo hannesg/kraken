@@ -1,6 +1,5 @@
 #include "kraken/node.h"
 #include "kraken/visitor.h"
-#include "kraken/node/gc.h"
 #include <cstdio>
 namespace Kraken {
 
@@ -16,10 +15,12 @@ namespace Kraken {
     // vs now contains all live nodes
     for( auto it =  _nodes.begin() ; it != _nodes.end() ; ){
       if( !vs.seen( *it ) ){
- //       
+        auto temp = it;
         printf("Erase: node %p\n", *it);
+        temp++;
         delete *it;
-        _nodes.erase(it); 
+        _nodes.erase(it);
+        it = temp;
       }else{
         printf("Keep: node %p\n", *it);
         it++;

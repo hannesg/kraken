@@ -10,6 +10,7 @@ namespace Kraken{
     RangeMap<symbol,Node*> _map;
     public:
     virtual void each_ref( const std::function<void(const Node*)>& ) const;
+    virtual const Node::Result* traverse( const std::string ) const;
     template<typename... T>
       inline void set( T... args ){
         _map.set(args...);

@@ -5,4 +5,8 @@ namespace Kraken {
     _map.each_value(fn);
   }
 
+  const Node::Result* Node::Map::traverse( const std::string ) const {
+    return nullptr;
+  }
+
 }
