@@ -86,6 +86,8 @@ namespace Kraken {
       std::string inspect();
       Group(symbol, unsigned int = 1);
       Group(symbol, unsigned int , unsigned int);
+      Group( std::initializer_list<Kraken::RangeSet<symbol>>, unsigned int = 1 );
+      Group( std::initializer_list<Kraken::RangeSet<symbol>>, unsigned int, unsigned int );
     };
 
 }

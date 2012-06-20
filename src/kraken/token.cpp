@@ -1,4 +1,5 @@
 #include "kraken/token.h"
+#include "kraken/base.h"
 #include <sstream>
 namespace Kraken {
 
@@ -71,6 +72,18 @@ Token::Group::Group( symbol s, unsigned int i ) : Token(i) {
 
 Token::Group::Group( symbol s, unsigned int mi, unsigned int ma ) : Token(mi,ma){
   _map.add( s );
+}
+
+Token::Group::Group( std::initializer_list<Kraken::RangeSet<symbol>> lst, unsigned int i ) : Token(i) {
+  for( auto set : lst ){
+    _map.add( set );
+  }
+}
+
+Token::Group::Group( std::initializer_list<Kraken::RangeSet<symbol>> lst, unsigned int mi, unsigned int ma ) : Token(mi, ma) {
+  for( auto set : lst ){
+    _map.add( set );
+  }
 }
 
 std::string Token::Seq::inspect(){
