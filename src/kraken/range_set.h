@@ -2,7 +2,7 @@
 #define KRAKEN_RANGE_SET_H_
 #include "kraken/range_map.h"
 
-namespace {
+namespace Kraken {
 
 template< typename K >
 class RangeSet : public RangeMap<K, bool>{
