@@ -17,9 +17,11 @@ struct overwrite : public std::binary_function<V,V,V>
 
 template< typename K, typename V>
 class RangeMap;
+}
 
 #include "kraken/range_set.h"
 
+namespace Kraken {
 template< typename K, typename V>
 class RangeMap {
 
@@ -92,7 +94,7 @@ public:
   V operator[](const K& key) const;
   void set( K, K, V, std::function<V(V,V)> = overwrite<V>() );
   void set( K, V, std::function<V(V,V)> = overwrite<V>() );
-  void set( Kraken::RangeSet<K>&, V, std::function<V(V,V)> = overwrite<V>() );
+  void set( const Kraken::RangeSet<K>&, V, std::function<V(V,V)> = overwrite<V>() );
   void each( const std::function<void(const K&, const K&, const V&)>& ) const;
   void each_value( const std::function<void(const V&)>& ) const;
   Iterator begin();
@@ -261,7 +263,7 @@ void RangeMap<K,V>::set( K mm , V value, std::function<V(V,V)> merger ){
 }
 
 template< typename K, typename V>
-void RangeMap<K,V>::set( Kraken::RangeSet<K>& set, V value, std::function<V(V,V)> merger ){
+void RangeMap<K,V>::set( const Kraken::RangeSet<K>& set, V value, std::function<V(V,V)> merger ){
   set.each( [value, merger, this]( const K &min, const K &max, const V &cond ){
     if( cond ){
       this->set( min, max, value, merger );
