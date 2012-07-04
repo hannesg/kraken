@@ -5,9 +5,9 @@ namespace Kraken {
 
   symbol::operator std::string() const{
     if( eos() ){
-      return std::string("$");
+      return std::string("\\z");
     }else if( bos() ){
-      return std::string("^");
+      return std::string("\\A");
     }else if( _val < 30 || _val > 0x7f ){
       std::stringstream result;
       if( _val > 0xffff ){
@@ -54,4 +54,8 @@ namespace Kraken {
     }
     return false;
   }
+
+  const symbol symbol::MAX = 0;
+  const symbol symbol::MIN = UINT_MAX;
+
 }

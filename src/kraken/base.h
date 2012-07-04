@@ -25,7 +25,13 @@ namespace Kraken {
     inline const bool eos() const { return _val == 0; };
     inline const bool bos() const { return _val == UINT_MAX; };
     const bool op() const;
+
+    static const symbol MAX;
+    static const symbol MIN;
+
   };
+
+  typedef unsigned short tentacle_id;
 
   enum encoding_id {
     GENERIC, UTF8

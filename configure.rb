@@ -140,16 +140,18 @@ class Hitman
     @dependencies.each do |name,deps|
       if cpp? name
         buf << o(name) << ': ' << [ cpp(name), *deps.map{|n| h(n) if h?(n) }.compact].join(' ') << "\n"
-        buf << "\tg++ -c " << cxx_args << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
+        buf << "\tg++ -pthread -c " << cxx_args << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
         if executable? name
           buf << bin(name) << ': ' << [ expand(name).map{|n| cpp?(n) ? o(n) : h(n) } ].join(' ') << "\n"
-          buf << "\tg++ " << cxx_args << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
+          buf << "\tg++ -pthread " << cxx_args << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
         end
       end
     end
     buf << 'all: ' << executables.join(' ') << "\n"
     buf << 'clean: ' << "\n"
     buf << "\trm -rf " << ( executables + objects ).join(' ') << "\n"
+    buf << 'Makefile: configure.rb src/* tests/*' << "\n"
+    buf << "\truby configure.rb > Makefile\n"
     buf << ".PHONY: all clean\n"
 
     puts buf.join

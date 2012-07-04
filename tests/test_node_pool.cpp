@@ -1,6 +1,8 @@
 
 #include "kraken/node.h"
 #include "kraken/node/map.h"
+#include "kraken/node/terminal.h"
+#include "kraken/node/result.h"
 #include "kraken/base.h"
 #include <functional>
 #include <algorithm>
@@ -12,7 +14,8 @@ std::list<Kraken::Node*> _nodes;
 
 public:
   virtual void each_ref( const std::function<void(const Kraken::Node*)>& ) const;
-  virtual const Kraken::Node::Result* traverse( const std::string ) const;
+  virtual const Kraken::Node::Result traverse( const std::string ) const;
+  virtual Kraken::Node* replace( Kraken::Node* placeholder, Kraken::Node* with );
   RealNode* add(Kraken::Node* node);
   ~RealNode();
 
@@ -22,8 +25,11 @@ void RealNode::each_ref( const std::function<void(const Kraken::Node*)>& fn ) co
   std::for_each( _nodes.begin(), _nodes.end(), fn);
   return ;
 }
-const Kraken::Node::Result* RealNode::traverse( const std::string ) const {
-  return nullptr;
+const Kraken::Node::Result RealNode::traverse( const std::string ) const {
+  return Kraken::Node::Result::fail;
+}
+Kraken::Node* RealNode::replace( Kraken::Node* placeholder, Kraken::Node* with ){
+  return this;
 }
 
 RealNode::~RealNode(){
@@ -47,6 +53,7 @@ int main(int argc, char** argv){
   map->set( 10, 20 , pool->make<RealNode>() );
   map->set( 10, 20 , pool->make<RealNode>() );
   map->set( 15, 25 , pool->make<RealNode>() );
+  map->set( 26, 28 , pool->make<Kraken::Node::Terminal>(0) );
   pool->make<RealNode>();
   pool->make<RealNode>();
   pool->make<Kraken::Node::Map>()->set(10,15, pool->make<RealNode>());

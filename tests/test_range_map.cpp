@@ -79,7 +79,30 @@ int test_range_map4(){
   return 0;
 }
 
+int test_range_map5(){
 
+  Kraken::RangeMap<int, int> rm;
+
+  rm.set(0, 10, 1);
+  rm.set(2,  5, 2);
+
+  EXPECT_VALUE( rm, 0, 1);
+  EXPECT_VALUE( rm, 2, 2);
+  EXPECT_VALUE( rm, 5, 2);
+  EXPECT_VALUE( rm, 6, 1);
+  EXPECT_VALUE( rm,10, 1);
+
+  rm.replace(2, 3);
+
+  EXPECT_VALUE( rm, 0, 1);
+  EXPECT_VALUE( rm, 2, 3);
+  EXPECT_VALUE( rm, 5, 3);
+  EXPECT_VALUE( rm, 6, 1);
+  EXPECT_VALUE( rm,10, 1);
+
+
+  return 0;
+}
 
 
 int main( int argc, char** argv){
@@ -88,5 +111,6 @@ int main( int argc, char** argv){
   test_range_map2();
   test_range_map3();
   test_range_map4();
+  test_range_map5();
   return 0;
 }

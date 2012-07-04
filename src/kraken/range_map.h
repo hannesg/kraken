@@ -50,7 +50,7 @@ class RangeMap {
     static Node* _insert( Node* node,  K min, K max, V value, std::function<V(V,V)> merger);
     static void _each( Node* node, const std::function<void(const K&, const K&, const V&)>& fn );
     static void _each_value( Node* node, const std::function<void(const V&)>& fn );
-
+    static void _replace( Node* node, const V x, const V with );
 
     friend class RangeMap;
     friend class Iterator;
@@ -101,6 +101,7 @@ public:
   inline Iterator end() const { return nullptr; };
   inline bool empty() const { return _node == nullptr; };
   inline bool singularity() const { return !empty() && _node->leave() && _node->min() == _node->max();};
+  void replace( const V x, const V with );
 
 protected:
 
@@ -242,6 +243,20 @@ void RangeMap<K,V>::Node::_each_value( RangeMap<K,V>::Node *node, const std::fun
   }
 }
 
+template< typename K, typename V >
+void RangeMap<K,V>::Node::_replace( RangeMap<K,V>::Node *node, const V x, const V with ) {
+  if( node == nullptr ){
+    return ;
+  }else{
+    if( x == node->value() ){
+      node->_value = with;
+    }
+    _replace( node->_left, x, with);
+    _replace( node->_right, x, with);
+  }
+}
+
+
 template< typename K, typename V>
 void RangeMap<K,V>::each( const std::function<void(const K&, const K&, const V&)>& fn ) const {
   RangeMap<K,V>::Node::_each( _node, fn );
@@ -263,12 +278,17 @@ void RangeMap<K,V>::set( K mm , V value, std::function<V(V,V)> merger ){
 }
 
 template< typename K, typename V>
-void RangeMap<K,V>::set( const Kraken::RangeSet<K>& set, V value, std::function<V(V,V)> merger ){
-  set.each( [value, merger, this]( const K &min, const K &max, const V &cond ){
+void RangeMap<K,V>::set( const Kraken::RangeSet<K>& zet, V value, std::function<V(V,V)> merger ){
+  zet.each( [value, merger, this]( const K &min, const K &max, const bool &cond ){
     if( cond ){
       this->set( min, max, value, merger );
     }
   });
+}
+
+template< typename K, typename V>
+void RangeMap<K,V>::replace( const V x, const V with ){
+  RangeMap<K,V>::Node::_replace( _node, x, with);
 }
 
 }

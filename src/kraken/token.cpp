@@ -1,5 +1,8 @@
 #include "kraken/token.h"
 #include "kraken/base.h"
+#include "kraken/node/map.h"
+#include "kraken/node/placeholder.h"
+#include "kraken/node/replacer.h"
 #include <sstream>
 namespace Kraken {
 
@@ -53,10 +56,46 @@ std::string Token::inspect_repetition() const{
   return result.str();
 }
 
+Node* Token::toNode( Node::Pool& pool , Node* pred ) const {
+  unsigned int mi = min();
+  unsigned int ma = max();
+  Node* result = pred;
+  if( ma == Token::_unlimited ){
+    result = toNodeSelfreferential( pool );
+  }else if( ma > mi ){
+    while( ma > mi ){
+      result = toNodeOptional( pool, result );
+      ma--;
+    }
+  }
+  if( mi > 0 ){
+    while( mi > 0 ){
+      result = toNodeOnce( pool, result );
+      mi--;
+    }
+  }
+  return result;
+}
+
+
+Node* Token::toNodeSelfreferential( Node::Pool& pool ) const {
+  Node* placeholder = pool.make<Node::Placeholder>();
+  Node* result = toNodeOptional( pool, placeholder);
+/*
+  EHHMM, will this happen?
+  if( result == placeholder ){
+    return 
+  }*/
+  Replacer replacer = Replacer( placeholder, result );
+  replacer.start(result);
+  replacer.traverse();
+  return result;
+}
+
 Token::Container::Container( std::initializer_list<Token*> lst, unsigned int q ) : _tokens(lst), Token(q) {}
 Token::Container::Container( std::initializer_list<Token*> lst, unsigned int mi, unsigned int ma ) : _tokens(lst), Token(mi,ma) {}
 Token::Container::~Container(){
-  for( Token* tk : _tokens ){
+  for( Token* tk : tokens() ){
     delete tk;
   }
 }
@@ -86,7 +125,7 @@ Token::Group::Group( std::initializer_list<Kraken::RangeSet<symbol>> lst, unsign
   }
 }
 
-std::string Token::Seq::inspect(){
+std::string Token::Seq::inspect() const{
   std::string result;
   for( Token *tk : tokens() ){
     result += tk->inspect();
@@ -95,7 +134,7 @@ std::string Token::Seq::inspect(){
   return result;
 }
 
-std::string Token::Alt::inspect(){
+std::string Token::Alt::inspect() const{
   std::string result;
   for( Token *tk : tokens() ){
     if( result.length() == 0 ){
@@ -110,7 +149,7 @@ std::string Token::Alt::inspect(){
   return result;
 }
 
-std::string Token::Group::inspect(){
+std::string Token::Group::inspect() const{
   std::string result;
   if( !_map.singularity() ){
     result += '[';
@@ -126,6 +165,73 @@ std::string Token::Group::inspect(){
     result += ']';
   }
   result += inspect_repetition();
+  return result;
+}
+
+Node* Token::Seq::toNodeOnce( Node::Pool& pool , Node* pred ) const {
+  Node* result = pred;
+  for( auto it = tokens().rbegin(); it != tokens().rend(); it++ ){
+    result = (*it)->toNodeOnce( pool, result );
+  }
+  return result;
+}
+
+Node* Token::Seq::toNodeSelfreferential( Node::Pool& pool) const {
+  Node* placeholder = pool.make<Node::Placeholder>();
+  Node* result = placeholder;
+  /*;
+  EHHMM, will this happen?
+  if( result == placeholder ){
+    return 
+  }*/
+  for( auto it = tokens().rbegin(); it != tokens().rend(); it++ ){
+    result = (*it)->toNodeOnce( pool, result );
+  }
+  Replacer replacer = Replacer( placeholder, result );
+  replacer.start(result);
+  replacer.traverse();
+  return result;
+}
+
+Node* Token::Seq::toNodeOptional( Node::Pool& pool, Node* yes) const {
+  Node* result = yes;
+  for( auto it = tokens().rbegin(); it != tokens().rend(); it++ ){
+    result = (*it)->toNodeOptional( pool, result );
+  }
+  return result;
+}
+
+
+Node* Token::Alt::toNodeOnce( Node::Pool& pool , Node* pred ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  return result;
+}
+
+Node* Token::Alt::toNodeSelfreferential( Node::Pool& pool ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  return result;
+}
+
+Node* Token::Alt::toNodeOptional( Node::Pool& pool, Node* yes ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  return result;
+}
+
+Node* Token::Group::toNodeOnce( Node::Pool& pool , Node* pred ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  result->set( _map, pred );
+  return result;
+}
+
+Node* Token::Group::toNodeSelfreferential( Node::Pool& pool ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  result->set( _map, result );
+  return result;
+}
+
+Node* Token::Group::toNodeOptional( Node::Pool& pool, Node* yes ) const {
+  Node::Map* result = pool.make<Node::Map>();
+  result->set( _map, yes );
   return result;
 }
 

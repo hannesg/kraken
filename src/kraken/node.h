@@ -10,32 +10,12 @@ namespace Kraken {
   class Node{
 
   public:
-    class Result {
-      Node* _node;
-      size_t _bytesize;
-    public:
-      Result( Node* );
-      inline Node* node(){
-        return _node;
-      }
-      inline size_t bytesize(){
-        return _bytesize;
-      }
-
-    };
-
-    class AltResult : public Result {
-
-      AltResult* operator++();
-
-    };
-
-    class SimpleResult : public Result {
-
-    };
+    
+    class Result;
 
     virtual void each_ref( const std::function<void(const Node*)>& ) const = 0;
-    virtual const Result* traverse( const std::string ) const = 0;
+    virtual const Result traverse( const std::string ) const = 0;
+    virtual Node* replace( Node* placeholder, Node* with ) = 0;
 
     class Pool{
       std::list<Node*> _nodes;
@@ -51,14 +31,19 @@ namespace Kraken {
       };
     };
 
+    virtual ~Node(){};
 
-  virtual ~Node();
+    friend class Pool;
 
-  friend class Pool;
-
-  class Map;
+    class Map;
+    class Terminal;
+    class Placeholder;
+    class Fork;
 
   };
 
 };
+
+#include "kraken/node/result.h"
+
 #endif

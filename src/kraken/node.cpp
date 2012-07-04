@@ -36,6 +36,4 @@ namespace Kraken {
     _nodes.clear();
   }
 
-  Node::~Node(){};
-
 }
