@@ -33,6 +33,8 @@ namespace Kraken {
 
   typedef unsigned short tentacle_id;
 
+  typedef std::string string;
+
   enum encoding_id {
     GENERIC, UTF8
   };

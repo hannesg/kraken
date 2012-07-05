@@ -11,7 +11,10 @@ namespace Kraken {
 		Link* _parent;
 		Node::Result _result;
 	public:
-		Link(Link* = nullptr);
+		Link(Link*);
+		Link(Link*, const Node::Result&);
+		explicit Link();
+		Link(const Node::Result&);
 		~Link();
 		void acquire();
 		void release();

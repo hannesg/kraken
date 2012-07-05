@@ -14,7 +14,7 @@ namespace Kraken {
     size_t _bytesize;
     std::string _error;
     Node* _next;
-    //std::function<const Node::Result(std::string)> _fork;
+    std::function<const Node::Result(std::string)> _fork;
     // TODO: captures!
   public:
     Result( Node* , size_t = 0);
@@ -32,7 +32,7 @@ namespace Kraken {
     inline const Node* next() const{
       return _next;
     }
-    /*inline const std::function<const Node::Result(std::string)> fork() const{
+    inline const std::function<const Node::Result(std::string)> fork() const{
       return _fork;
     }
     inline const bool hasFork() const {
@@ -40,7 +40,7 @@ namespace Kraken {
     }
     inline const Result retry(std::string s){
       return _fork(s);
-    }*/
+    }
     inline const bool isFail() const{
       return _type == FAIL;
     }
