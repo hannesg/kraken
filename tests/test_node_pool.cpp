@@ -14,8 +14,7 @@ std::list<Kraken::Node*> _nodes;
 
 public:
   virtual void each_ref( const std::function<void(const Kraken::Node*)>& ) const;
-  virtual const Kraken::Node::Result traverse( const std::string ) const;
-  virtual Kraken::Node* replace( Kraken::Node* placeholder, Kraken::Node* with );
+  virtual const Kraken::Node::Result traverse( const Kraken::string ) const;
   RealNode* add(Kraken::Node* node);
   ~RealNode();
 
@@ -25,15 +24,12 @@ void RealNode::each_ref( const std::function<void(const Kraken::Node*)>& fn ) co
   std::for_each( _nodes.begin(), _nodes.end(), fn);
   return ;
 }
-const Kraken::Node::Result RealNode::traverse( const std::string ) const {
+
+const Kraken::Node::Result RealNode::traverse( const Kraken::string ) const {
   return Kraken::Node::Result::fail;
-}
-Kraken::Node* RealNode::replace( Kraken::Node* placeholder, Kraken::Node* with ){
-  return this;
 }
 
 RealNode::~RealNode(){
-  printf("clearing RealNode\n");
   _nodes.clear();
 }
 

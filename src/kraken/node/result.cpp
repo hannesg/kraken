@@ -8,7 +8,7 @@ Node::Result::Result( Node* node, size_t size ) :
   _error() {
 }
 
-Node::Result::Result( Node* node, std::function<const Node::Result(std::string)> fork, size_t size ) :
+Node::Result::Result( Node* node, std::function<const Node::Result(Kraken::string)> fork, size_t size ) :
   _next(node),
   _fork(fork),
   _type(SUCCESS),

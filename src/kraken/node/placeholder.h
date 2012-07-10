@@ -7,7 +7,7 @@ namespace Kraken {
 
   class Node::Placeholder : public Node {
     virtual void each_ref( const std::function<void(const Node*)>& ) const;
-    virtual const Node::Result traverse( const std::string ) const;
+    virtual const Node::Result traverse( const Kraken::string ) const;
     virtual Node* replace( Node* placeholder, Node* with );
   };
 

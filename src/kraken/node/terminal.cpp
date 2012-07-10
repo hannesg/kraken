@@ -12,7 +12,7 @@ Node* Node::Terminal::replace( Node* placeholder, Node* with ){
   return this;
 }
 
-const Node::Result Node::Terminal::traverse( const std::string ) const {
+const Node::Result Node::Terminal::traverse( const Kraken::string ) const {
   return Kraken::Node::Result::fail;
 }
 

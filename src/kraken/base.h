@@ -11,7 +11,7 @@ namespace Kraken {
     inline symbol(unsigned int v) : _val(v) {};
     inline symbol(const symbol& s ) : _val(s._val) {};
     inline symbol(char c) : _val(c) {};
-    inline symbol operator=(const symbol& s){ _val = s._val; };
+    inline symbol operator=(const symbol& s){ _val = s._val; return *this; };
     operator std::string() const;
     explicit inline operator unsigned int() const { return _val; };
     inline bool operator!=( const symbol s ) const { return _val != s._val; };
@@ -33,7 +33,9 @@ namespace Kraken {
 
   typedef unsigned short tentacle_id;
 
-  typedef std::string string;
+  class string {
+
+  };
 
   enum encoding_id {
     GENERIC, UTF8

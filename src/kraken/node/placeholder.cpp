@@ -10,7 +10,7 @@ Node* Node::Placeholder::replace( Node* placeholder, Node* with ){
   return this;
 }
 
-const Node::Result Node::Placeholder::traverse( const std::string ) const {
+const Node::Result Node::Placeholder::traverse( const Kraken::string ) const {
   std::cerr << "Traversing a placeholder node. This is definitely an error.";
   return Kraken::Node::Result::fail;
 }

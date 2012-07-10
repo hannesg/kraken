@@ -140,10 +140,10 @@ class Hitman
     @dependencies.each do |name,deps|
       if cpp? name
         buf << o(name) << ': ' << [ cpp(name), *deps.map{|n| h(n) if h?(n) }.compact].join(' ') << "\n"
-        buf << "\tg++ -pthread -c " << cxx_args << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
+        buf << "\tg++ -pthread -Wall -c " << cxx_args << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
         if executable? name
           buf << bin(name) << ': ' << [ expand(name).map{|n| cpp?(n) ? o(n) : h(n) } ].join(' ') << "\n"
-          buf << "\tg++ -pthread " << cxx_args << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
+          buf << "\tg++ -pthread -Wall " << cxx_args << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
         end
       end
     end

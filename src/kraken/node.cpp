@@ -4,6 +4,14 @@
 #include <functional>
 namespace Kraken {
 
+  void Node::each_ref( const std::function<void(const Node*)>& ) const {
+    return;
+  }
+
+  Node* Node::replace( Node* placeholder, Node* with ){
+    return this;
+  }
+
   const std::function<const Node::Result(Kraken::string)> Node::bindTraverse() const {
     return std::bind( &Node::traverse, this, std::placeholders::_1 );
   }

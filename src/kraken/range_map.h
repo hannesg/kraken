@@ -43,9 +43,9 @@ class RangeMap {
   private:
     K _min;
     K _max;
+    V _value;
     Node* _left;
     Node* _right;
-    V _value;
 
     static Node* _insert( Node* node,  K min, K max, V value, std::function<V(V,V)> merger);
     static void _each( Node* node, const std::function<void(const K&, const K&, const V&)>& fn );
@@ -123,7 +123,7 @@ RangeMap<K,V>::Node::Node(K min, K max, V value) : _min(min), _max(max), _value(
 };
 
 template< typename K, typename V>
-RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), _max(node->_max), _value(node->_value){
+RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), _max(node->_max), _value(node->_value), _left(nullptr), _right(nullptr) {
   if( node->_left == nullptr ){
     _left = nullptr;
   }else{
@@ -137,7 +137,7 @@ RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), 
 };
 
 template< typename K, typename V>
-RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node &node) : _min(node._min), _max(node._max), _value(node._value){
+RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node &node) : _min(node._min), _max(node._max), _value(node._value), _left(nullptr), _right(nullptr) {
   if( node._left == nullptr ){
     _left = nullptr;
   }else{

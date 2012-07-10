@@ -92,8 +92,8 @@ Node* Token::toNodeSelfreferential( Node::Pool& pool ) const {
   return result;
 }
 
-Token::Container::Container( std::initializer_list<Token*> lst, unsigned int q ) : _tokens(lst), Token(q) {}
-Token::Container::Container( std::initializer_list<Token*> lst, unsigned int mi, unsigned int ma ) : _tokens(lst), Token(mi,ma) {}
+Token::Container::Container( std::initializer_list<Token*> lst, unsigned int q ) : Token(q), _tokens(lst) {}
+Token::Container::Container( std::initializer_list<Token*> lst, unsigned int mi, unsigned int ma ) : Token(mi,ma), _tokens(lst) {}
 Token::Container::~Container(){
   for( Token* tk : tokens() ){
     delete tk;

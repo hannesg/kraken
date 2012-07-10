@@ -9,18 +9,19 @@ namespace Kraken {
  	public:
  		enum TYPE { SUCCESS, FAIL, ERROR };
     static const Result fail;
+    typedef std::function<const Node::Result(Kraken::string)> fork_function ;
  	private:
     TYPE _type;
     size_t _bytesize;
     std::string _error;
     Node* _next;
-    std::function<const Node::Result(std::string)> _fork;
+    fork_function _fork;
     // TODO: captures!
   public:
     // Found something:
     Result( Node* , size_t = 0);
     // Found something aaaaaaaaaand has an alternative:
-    Result( Node* , std::function<const Node::Result(std::string)> , size_t = 0);
+    Result( Node* , fork_function , size_t = 0);
 
     //TODO: Found nothing but has anothe place to look at ?!?:
     //Result( std::function<const Node::Result(std::string)> );
@@ -42,13 +43,16 @@ namespace Kraken {
     inline const Node* next() const{
       return _next;
     }
-    inline const std::function<const Node::Result(std::string)> fork() const{
+    inline const fork_function fork() const{
       return _fork;
     }
     inline const bool hasFork() const {
       return _fork != nullptr;
     }
-    inline const Result retry(std::string s){
+    inline const Result retry(Kraken::string s){
+      if( !hasFork() ){
+        return fail;
+      }
       return _fork(s);
     }
     inline const bool isFail() const{
