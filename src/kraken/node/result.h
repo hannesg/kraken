@@ -7,7 +7,7 @@ namespace Kraken {
 
  	class Node::Result{
  	public:
- 		enum TYPE { HIT, FAIL, ERROR };
+ 		enum TYPE { SUCCESS, FAIL, ERROR };
     static const Result fail;
  	private:
     TYPE _type;
@@ -17,11 +17,21 @@ namespace Kraken {
     std::function<const Node::Result(std::string)> _fork;
     // TODO: captures!
   public:
+    // Found something:
     Result( Node* , size_t = 0);
+    // Found something aaaaaaaaaand has an alternative:
     Result( Node* , std::function<const Node::Result(std::string)> , size_t = 0);
+
+    //TODO: Found nothing but has anothe place to look at ?!?:
+    //Result( std::function<const Node::Result(std::string)> );
+    
+    // Error with description:
     Result( std::string );
     Result( const char* );
+    
+    // Didn't find anything:
     Result( std::nullptr_t );
+
     ~Result(){};
     inline const size_t bytesize() const{
       return _bytesize;
@@ -36,7 +46,7 @@ namespace Kraken {
       return _fork;
     }
     inline const bool hasFork() const {
-      return _fork == nullptr;
+      return _fork != nullptr;
     }
     inline const Result retry(std::string s){
       return _fork(s);
@@ -47,11 +57,11 @@ namespace Kraken {
     inline const bool isError() const{
       return _type == ERROR;
     }
-    inline const bool isHit() const{
-      return _type == HIT;
+    inline const bool isSuccess() const{
+      return _type == SUCCESS;
     }
     inline operator bool() const{
-      return _type == HIT;
+      return _type == SUCCESS;
     }
   };
 

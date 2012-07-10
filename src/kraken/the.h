@@ -19,12 +19,11 @@ namespace Kraken {
     	Node *_root;
     public:
     	The();
-    	template<typename T, typename... Args>
-    	The(Args... args) : _pool(), _root(nullptr) {
-	        _root = _pool.make<T>( args... );
-	    };
 //    	Attack* attack( Kraken::string ) const;
     	inline Node* root() const {
+    		return _root;
+    	}
+    	inline Node*& root(){
     		return _root;
     	}
 

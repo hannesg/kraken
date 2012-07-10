@@ -1,5 +1,6 @@
 #ifndef KRAKEN_NODE_H
 #define KRAKEN_NODE_H
+#include "kraken/base.h"
 #include <list>
 #include <map>
 #include <set>
@@ -16,6 +17,7 @@ namespace Kraken {
     virtual void each_ref( const std::function<void(const Node*)>& ) const = 0;
     virtual const Result traverse( const std::string ) const = 0;
     virtual Node* replace( Node* placeholder, Node* with ) = 0;
+    virtual const std::function<const Node::Result(Kraken::string)> bindTraverse() const;
 
     class Pool{
       std::list<Node*> _nodes;

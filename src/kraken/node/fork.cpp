@@ -9,7 +9,7 @@ void Node::Fork::each_ref( const std::function<void(const Node*)>& fun ) const {
 
 const Node::Result Node::Fork::traverse( const std::string ) const {
 	if( _fork ){
-		return Node::Result( _main, std::bind(&Node::traverse, _fork, std::placeholders::_1) );
+		return Node::Result( _main, _fork->bindTraverse() );
 	}else{
 		return _main;
 	}

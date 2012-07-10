@@ -1,7 +1,12 @@
 #include "kraken/node.h"
 #include "kraken/visitor.h"
 #include <cstdio>
+#include <functional>
 namespace Kraken {
+
+  const std::function<const Node::Result(Kraken::string)> Node::bindTraverse() const {
+    return std::bind( &Node::traverse, this, std::placeholders::_1 );
+  }
 
   Node::Pool& Node::Pool::operator<<(Node* node){
     _nodes.push_back(node);
