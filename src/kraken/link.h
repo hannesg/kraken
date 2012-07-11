@@ -7,9 +7,9 @@ namespace Kraken {
 	class Link;
 
 	class Link {
-		volatile unsigned int _refs;
-		Link* _parent;
 		Node::Result _result;
+		Link* _parent;
+		volatile unsigned int _refs;
 	public:
 		Link(Link*);
 		Link(Link*, const Node::Result&);
