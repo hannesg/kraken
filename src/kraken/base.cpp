@@ -58,7 +58,4 @@ namespace Kraken {
   const symbol symbol::MAX = 0;
   const symbol symbol::MIN = UINT_MAX;
 
-  string::string() : _inner() {}
-  string::string( const string& s ) : _inner(s._inner) {}
-
 }

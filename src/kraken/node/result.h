@@ -1,5 +1,6 @@
 #ifndef KRAKEN_NODE_RESULT_H
 #define KRAKEN_NODE_RESULT_H
+#include "kraken/string.h"
 #include "kraken/node.h"
 #include <cstring>
 #include <functional>
