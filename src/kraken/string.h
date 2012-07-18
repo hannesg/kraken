@@ -16,6 +16,7 @@ namespace Kraken {
   class string_private {
 
     virtual Kraken::read read() = 0;
+    virtual string_private* operator+(const size_t) = 0;
   
     friend class string;
 
@@ -23,11 +24,21 @@ namespace Kraken {
 
   class string {
     string_private* _inner;
+    string( string_private* );
   public:
     string( const string& s );
     string();
-    inline Kraken::read read(){
+    inline bool valid() const {
+      return _inner != nullptr;
+    }
+    inline operator bool() const{
+      return _inner != nullptr;
+    }
+    inline const Kraken::read read() const {
       return _inner->read();
+    }
+    inline const string operator+(const size_t t) const{
+      return string( _inner + t );
     }
   };
 
