@@ -132,7 +132,15 @@ class Hitman
   end
 
   def cxx_args
-    ['--std=c++0x', *@srcdirs.map{|d| "-I#{d}"} ].join(' ')
+    [' -pthread -Wall -std=c++0x' ]
+  end
+
+  def cxx_cargs
+    ( cxx_args + [ *@srcdirs.map{|d| "-I#{d}"} ] ).join(' ')
+  end
+
+  def cxx_ld
+    ( cxx_args ).join(' ')
   end
 
   def echo!
@@ -140,10 +148,10 @@ class Hitman
     @dependencies.each do |name,deps|
       if cpp? name
         buf << o(name) << ': ' << [ cpp(name), *deps.map{|n| h(n) if h?(n) }.compact].join(' ') << "\n"
-        buf << "\tg++ -pthread -Wall -c " << cxx_args << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
+        buf << "\tg++ -c " << cxx_cargs << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
         if executable? name
           buf << bin(name) << ': ' << [ expand(name).map{|n| cpp?(n) ? o(n) : h(n) } ].join(' ') << "\n"
-          buf << "\tg++ -pthread -Wall " << cxx_args << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
+          buf << "\tg++ " << cxx_ld << ' ' << expand(name).select{|n| cpp?(n) }.map{|n| o(n) }.join(' ') << ' ' << ' -o ' << File.basename(name) << "\n"
         end
       end
     end
