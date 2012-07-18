@@ -9,7 +9,7 @@ namespace Kraken {
  	public:
  		enum TYPE { SUCCESS, FAIL, ERROR };
     static const Result fail;
-    typedef std::function<const Node::Result(Kraken::string)> fork_function ;
+    typedef std::function<const Node::Result(const Kraken::string)> fork_function ;
  	private:
     TYPE _type;
     size_t _bytesize;
@@ -21,7 +21,8 @@ namespace Kraken {
     // Found something:
     Result( Node* , size_t = 0);
     // Found something aaaaaaaaaand has an alternative:
-    Result( Node* , fork_function , size_t = 0);
+    Result( Node* , const fork_function , size_t = 0);
+    Result( Node* , Node* , size_t = 0);
 
     //TODO: Found nothing but has anothe place to look at ?!?:
     //Result( std::function<const Node::Result(std::string)> );

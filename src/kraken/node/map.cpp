@@ -7,16 +7,13 @@ namespace Kraken {
   }
 
   const Node::Result Node::Map::traverse( const Kraken::string ) const {
+    
     return Node::Result::fail;
   }
 
   Node* Node::Map::replace( Node* placeholder, Node* with ){
     _map.replace( placeholder, with );
     return this;
-  }
-
-  void Node::Map::setDefault( Node* node ){
-    _map.set( symbol::MIN , symbol::MAX , node );
   }
 
 }

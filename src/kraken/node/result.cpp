@@ -9,12 +9,20 @@ Node::Result::Result( Node* node, size_t size ) :
   _fork() {
 }
 
-Node::Result::Result( Node* node, std::function<const Node::Result(Kraken::string)> fork, size_t size ) :
+Node::Result::Result( Node* node, const std::function<const Node::Result(const Kraken::string)> fork, size_t size ) :
   _type(SUCCESS),
   _bytesize(size),
   _error(),
   _next(node),
   _fork(fork) {
+}
+
+Node::Result::Result( Node* node, Node* fork, size_t size ) :
+  _type(SUCCESS),
+  _bytesize(size),
+  _error(),
+  _next(node),
+  _fork(fork->bindTraverse()) {
 }
 
 Node::Result::Result( std::string str ) :

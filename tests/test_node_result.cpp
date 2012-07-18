@@ -1,9 +1,10 @@
+#include "kraken/base.h"
 #include "kraken/node.h"
 #include "kraken/node/result.h"
 #include "kraken/node/terminal.h"
 #include <iostream>
 
-int test_result_from_error(){
+void test_result_from_error(){
 
 	Kraken::Node::Result res = "This is borked";
 	
@@ -29,7 +30,7 @@ int test_result_from_error(){
 	}
 }
 
-int test_result_from_nullptr(){
+void test_result_from_nullptr(){
 	Kraken::Node::Result res = nullptr;
 	if( !res.isFail() ){
 		std::cout << "Result from nullptr should be a fail\n";
@@ -48,7 +49,7 @@ int test_result_from_nullptr(){
 	}
 }
 
-int test_result_from_node(){
+void test_result_from_node(){
 	Kraken::Node* node = new Kraken::Node::Terminal(0);
 	Kraken::Node::Result res = node;
 	if( !res.isSuccess() ){
@@ -69,7 +70,7 @@ int test_result_from_node(){
 	delete node;
 }
 
-int test_result_from_node_and_fork(){
+void test_result_from_node_and_fork(){
 	Kraken::Node* node = new Kraken::Node::Terminal(0);
 	Kraken::Node::Result res = Kraken::Node::Result( node, node->bindTraverse() );
 	if( !res.isSuccess() ){

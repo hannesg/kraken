@@ -16,7 +16,6 @@ namespace Kraken{
       inline void set( T... args ){
         _map.set(args...);
       }
-    void setDefault( Node* );
     //void set( symbol, symbol, Node* );
     //void set( RangeSet<symbol>&, Node* );
   };
