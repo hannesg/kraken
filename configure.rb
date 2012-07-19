@@ -220,7 +220,7 @@ h = Hitman.new do
   srcdir 'src'
   srcdir 'tests'
 
-  executable 'tests/*.cpp'
+  executable 'tests/test_*.cpp'
 
 end
 
