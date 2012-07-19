@@ -33,7 +33,7 @@ class RangeMap {
 
     Node(K min, K max, V value);
     Node(const Node&);
-    Node(const Node*);
+    //Node(const Node*);
     ~Node();
     inline V value() const { return _value; };
     inline K min() const { return _min; };
@@ -121,7 +121,7 @@ RangeMap<K,V>::Node::~Node(){
 template< typename K, typename V >
 RangeMap<K,V>::Node::Node(K min, K max, V value) : _min(min), _max(max), _value(value), _left(nullptr), _right(nullptr) {
 };
-
+/*
 template< typename K, typename V>
 RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), _max(node->_max), _value(node->_value), _left(nullptr), _right(nullptr) {
   if( node->_left == nullptr ){
@@ -135,18 +135,18 @@ RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node * node) : _min(node->_min), 
     _right = new Node(node->_right);
   }
 };
-
+*/
 template< typename K, typename V>
 RangeMap<K,V>::Node::Node(const RangeMap<K,V>::Node &node) : _min(node._min), _max(node._max), _value(node._value), _left(nullptr), _right(nullptr) {
   if( node._left == nullptr ){
     _left = nullptr;
   }else{
-    _left = new Node(node._left);
+    _left = new Node(*(node._left));
   }
   if( node._right == nullptr ){
     _right = nullptr;
   }else{
-    _right = new Node(node._right);
+    _right = new Node(*(node._right));
   }
 };
 
@@ -155,22 +155,15 @@ RangeMap<K,V>::RangeMap() : _node(nullptr), _nil(0) {
 };
 
 template< typename K, typename V>
-RangeMap<K,V>::RangeMap(const RangeMap<K,V> &rm){
-  if( rm._node == nullptr ){
-    _node = nullptr;
-  }else{
-    _node = new Node(rm._node);
+RangeMap<K,V>::RangeMap(const RangeMap<K,V> &rm) : _node(nullptr), _nil(rm._nil){
+  if( rm._node != nullptr ){
+    _node = new Node( *(rm._node) );
   }
 };
 
 template< typename K, typename V>
-RangeMap<K,V>::RangeMap(RangeMap<K,V> &&rm){
-  if( rm._node == nullptr ){
-    _node = nullptr;
-  }else{
-    _node = rm._node;
-    rm._node = nullptr;
-  }
+RangeMap<K,V>::RangeMap(RangeMap<K,V> &&rm) : _node(rm._node), _nil(rm._nil){
+  rm._node = nullptr;
 };
 
 template< typename K, typename V>
