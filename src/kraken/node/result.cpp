@@ -2,8 +2,8 @@
 namespace Kraken {
 
 Node::Result::Result( Node* node, size_t size ) : 
-  _type(SUCCESS),
-  _bytesize(size),
+  _type( node ? SUCCESS : FAIL ),
+  _bytesize( node ? size : 0 ),
   _error(),
   _next(node),
   _fork() {

@@ -49,6 +49,25 @@ void test_result_from_nullptr(){
 	}
 }
 
+void test_result_from_nullnode(){
+	Kraken::Node::Result res = (Kraken::Node*) 0;
+	if( !res.isFail() ){
+		std::cout << "Result from nullnode should be a fail\n";
+	}else{
+		std::cout << ".";
+	}
+	if( res ){
+		std::cout << "Result from nullnode evaled to true";
+	}else{
+		std::cout << ".";
+	}
+	if( res.hasFork() ){
+		std::cout << "Result from nullnode has a fork";
+	}else{
+		std::cout << ".";
+	}
+}
+
 void test_result_from_node(){
 	Kraken::Node* node = new Kraken::Node::Terminal(0);
 	Kraken::Node::Result res = node;
@@ -94,6 +113,7 @@ void test_result_from_node_and_fork(){
 int main(int argc, char** argv){
 	test_result_from_error();
 	test_result_from_nullptr();
+	test_result_from_nullnode();
 	test_result_from_node();
 	test_result_from_node_and_fork();
 	std::cout << "\n";
