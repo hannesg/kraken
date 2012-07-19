@@ -1,21 +1,30 @@
 #include "mock_string.h"
-
+#include <iostream>
 
 mock_string::mock_string( Kraken::read* read, unsigned int n ) : _read(read), _n(n), _allocated(false) {
 }
 
 mock_string::mock_string( const std::initializer_list<Kraken::read> &r ) : _read(nullptr), _n( r.size() ), _allocated(true) {
-    _read = new Kraken::read[ r.size() ];
-    std::copy( r.begin(), r.end(), _read );
+    if( r.size() ){
+        _read = new Kraken::read[ r.size() ];
+        std::copy( r.begin(), r.end(), _read );
+    }
 }
 
 mock_string::~mock_string(){
-    if( _allocated ){
+    if( _allocated && valid() ){
         delete[] _read;
     }
 }
 
+bool mock_string::valid() const {
+    return _read != nullptr;
+}
+
 Kraken::read mock_string::read() const {
+    if( _read == nullptr ){
+        return Kraken::read();
+    }
     return *_read;
 }
 

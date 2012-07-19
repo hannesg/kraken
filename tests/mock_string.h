@@ -18,6 +18,7 @@ public:
 
     virtual Kraken::read read() const ;
     virtual Kraken::string_private* operator+(const size_t s) const ;
+    virtual bool valid() const ;
 
 };
 
