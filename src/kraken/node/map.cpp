@@ -6,9 +6,11 @@ namespace Kraken {
     _map.each_value(fn);
   }
 
-  const Node::Result Node::Map::traverse( const Kraken::string ) const {
-    
-    return Node::Result::fail;
+  const Node::Result Node::Map::traverse( const Kraken::string str ) const {
+    read r = str.read();
+    if( r._error ) return "Invalid character";
+    Node* node = _map[r._sym];
+    return Node::Result(node, r._size);
   }
 
   Node* Node::Map::replace( Node* placeholder, Node* with ){

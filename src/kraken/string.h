@@ -7,11 +7,11 @@ namespace Kraken {
 
   struct read{
     symbol _sym;
-    bool _err;
+    bool _error;
     size_t _size;
-    read() : _sym(0), _err(true), _size(0) {
+    read() : _sym(0), _error(true), _size(0) {
     }
-    read(symbol s, size_t size = 1) : _sym(s), _err(false), _size(size) {
+    read(symbol s, size_t size = 1) : _sym(s), _error(false), _size(size) {
     }
   };
 
