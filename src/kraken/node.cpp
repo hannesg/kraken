@@ -1,6 +1,5 @@
 #include "kraken/node.h"
 #include "kraken/visitor.h"
-#include <cstdio>
 #include <functional>
 namespace Kraken {
 
@@ -29,21 +28,22 @@ namespace Kraken {
     for( auto it =  _nodes.begin() ; it != _nodes.end() ; ){
       if( !vs.seen( *it ) ){
         auto temp = it;
-        printf("Erase: node %p\n", *it);
         temp++;
         delete *it;
         _nodes.erase(it);
         it = temp;
       }else{
-        printf("Keep: node %p\n", *it);
         it++;
       }
     }
   }
 
+  Node::Pool::~Pool(){
+    clear();
+  }
+
   void Node::Pool::clear(){
     for( auto it =  _nodes.begin() ; it != _nodes.end() ; it++ ){
-      printf("Clear node %p\n", *it);
       delete *it;
     }
     _nodes.clear();

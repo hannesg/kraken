@@ -26,6 +26,7 @@ namespace Kraken {
       Pool& operator<<(Node*);
       void clear();
       void gc(Node* root);
+      virtual ~Pool();
       template<typename T, typename... Args>
       T* make(Args... args){
         T* result = new T( args... );
