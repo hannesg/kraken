@@ -9,35 +9,50 @@ namespace Kraken {
     symbol _sym;
     bool _err;
     size_t _size;
+    read() : _sym(0), _err(true), _size(0) {
+    }
+    read(symbol s, size_t size = 1) : _sym(s), _err(false), _size(size) {
+    }
   };
 
   class string;
 
   class string_private {
 
-    virtual Kraken::read read() = 0;
-    virtual string_private* operator+(const size_t) = 0;
-  
-    friend class string;
+  public:
+    virtual ~string_private(){};
+    virtual Kraken::read read() const = 0;
+    virtual string_private* operator+(const size_t) const = 0;
+    virtual bool valid() const;
+
+  };
+
+  class invalid_string_private : public string_private {
+
+  public:
+    virtual Kraken::read read() const ;
+    virtual string_private* operator+(const size_t) const ;
+    virtual bool valid() const;
 
   };
 
   class string {
     string_private* _inner;
-    string( string_private* );
   public:
+    string( string_private* );
     string( const string& s );
     string();
+    ~string();
     inline bool valid() const {
-      return _inner != nullptr;
+      return _inner->valid();
     }
     inline operator bool() const{
-      return _inner != nullptr;
+      return _inner->valid();
     }
     inline const Kraken::read read() const {
       return _inner->read();
     }
-    inline const string operator+(const size_t t) const{
+    inline const string advance(const size_t t) const{
       return string( _inner + t );
     }
   };
