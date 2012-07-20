@@ -13,13 +13,13 @@ int main(int argc, char** argv){
 		Kraken::read( 3 )
 	} );
 
-	Kraken::string s = ms + 0;
+	Kraken::string s = ms->clone();
 
-	s = s.advance( 1 );
+	Kraken::string t = s.advance( 1 );
 
-	s = s.advance( 2 );
+	//s = s.advance( 2 );
 
-	s = s.advance( 1 );
+	//s = s.advance( 1 );
 
 	delete ms;
 

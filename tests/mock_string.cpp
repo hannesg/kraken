@@ -28,7 +28,7 @@ Kraken::read mock_string::read() const {
     return *_read;
 }
 
-Kraken::string_private* mock_string::operator+(const size_t s) const {
+Kraken::string_private* mock_string::advance(const size_t s) const {
     int t = s;
     unsigned int n = _n;
     Kraken::read* read = _read;
@@ -41,4 +41,8 @@ Kraken::string_private* mock_string::operator+(const size_t s) const {
         return nullptr;
     }
     return new mock_string( read, n );
+}
+
+bool mock_string::allocated() const{
+    return _allocated;
 }

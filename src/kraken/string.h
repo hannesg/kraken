@@ -22,7 +22,8 @@ namespace Kraken {
   public:
     virtual ~string_private(){};
     virtual Kraken::read read() const = 0;
-    virtual string_private* operator+(const size_t) const = 0;
+    virtual string_private* advance(const size_t) const = 0;
+    virtual string_private* clone() const;
     virtual bool valid() const;
 
   };
@@ -31,7 +32,7 @@ namespace Kraken {
 
   public:
     virtual Kraken::read read() const ;
-    virtual string_private* operator+(const size_t) const ;
+    virtual string_private* advance(const size_t) const ;
     virtual bool valid() const;
 
   };
@@ -41,6 +42,8 @@ namespace Kraken {
   public:
     string( string_private* );
     string( const string& s );
+    string( string&& s );
+    const string operator=(const string s);
     string();
     ~string();
     inline bool valid() const {
@@ -53,7 +56,7 @@ namespace Kraken {
       return _inner->read();
     }
     inline const string advance(const size_t t) const{
-      return string( _inner + t );
+      return string( _inner->advance(t) );
     }
   };
 
