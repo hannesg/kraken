@@ -1,4 +1,3 @@
-#include "kraken/string.h"
 #include "mock_string.h"
 #include "kraken/node/map.h"
 #include "kraken/node/terminal.h"
@@ -7,10 +6,10 @@
 void test_node_map1(){
 	Kraken::Node::Pool pool;
 	Kraken::Node::Map* node = pool.make<Kraken::Node::Map>();
-	mock_string s = { Kraken::read(15) };
+	MockString s = { 15 };
 
 	node->set( 10, 20, pool.make<Kraken::Node::Terminal>(1) );
-	Kraken::Node::Result result = node->traverse(&s);
+	Kraken::Node::Result result = node->traverse(s, s);
 
 	if( result.isSuccess() ){
 		std::cout << ".";
@@ -22,10 +21,10 @@ void test_node_map1(){
 void test_node_map2(){
 	Kraken::Node::Pool pool;
 	Kraken::Node::Map* node = pool.make<Kraken::Node::Map>();
-	mock_string s = { Kraken::read(5) };
+	MockString s = { 5 };
 
 	node->set( 10, 20, pool.make<Kraken::Node::Terminal>(1) );
-	Kraken::Node::Result result = node->traverse(&s);
+	Kraken::Node::Result result = node->traverse(s, s);
 
 	if( result.isFail() ){
 		std::cout << ".";
@@ -37,10 +36,10 @@ void test_node_map2(){
 void test_node_map3(){
 	Kraken::Node::Pool pool;
 	Kraken::Node::Map* node = pool.make<Kraken::Node::Map>();
-	mock_string s = { };
+	MockString s = { };
 
 	node->set( 10, 20, pool.make<Kraken::Node::Terminal>(1) );
-	Kraken::Node::Result result = node->traverse(&s);
+	Kraken::Node::Result result = node->traverse(s, s);
 
 	if( result.isError() ){
 		std::cout << ".";

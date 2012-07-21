@@ -30,6 +30,10 @@ namespace Kraken {
     }
   }
 
+  std::ostream& operator<<(std::ostream& io, symbol s){
+    return io << s.operator std::string();
+  }
+
   const bool symbol::op() const{
     if( eos() || bos() ) return true;
     if( _val > 0x7f ){
@@ -57,5 +61,10 @@ namespace Kraken {
 
   const symbol symbol::MAX = 0;
   const symbol symbol::MIN = UINT_MAX;
+  const symbol symbol::EOS = 0;
+
+  element::element() : _sym(symbol::EOS), _size(0), _error(true) {};
+
+  element::element( symbol sym , size_t size ) : _sym(sym), _size(size), _error(false) {};
 
 }

@@ -8,7 +8,7 @@ namespace Kraken {
         Node* _fork;
     public:
         virtual void each_ref( const std::function<void(const Node*)>& ) const;
-        virtual const Node::Result traverse( const Kraken::string ) const;
+        virtual const Node::Result traverse( const Kraken::Decoder& d, const char* const c ) const override;
         virtual Node* replace( Node* placeholder, Node* with );
     };
 

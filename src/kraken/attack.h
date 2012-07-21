@@ -11,10 +11,11 @@ namespace Kraken {
 
     const Kraken::The *_kraken;
     Link* _head;
-    const unsigned char *_string;
+    const Kraken::Decoder& _decoder;
+    const char* const _string;
 
   public:
-    Attack( const Kraken::The *kraken, const unsigned char *string );
+    Attack( const Kraken::The *kraken, const Kraken::Decoder& d, const char* const c);
     bool step();
 
   };

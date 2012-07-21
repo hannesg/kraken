@@ -1,5 +1,4 @@
-#include "kraken.h"
-#include "kraken/string.h"
+#include "kraken/base.h"
 #include "mock_string.h"
 #include <iostream>
 #include <array>
@@ -7,18 +6,14 @@
 
 int main(int argc, char** argv){
 
-	mock_string *ms = new mock_string( {
-		Kraken::read( 1 ),
-		Kraken::read( 2 ),
-		Kraken::read( 3 )
+	MockString *ms = new MockString( {
+		1, 2, 3
 	} );
 
-	Kraken::string s = ms->clone();
+	Kraken::element e = ms->read( *ms );
 
-	Kraken::string t = s.advance( 1 );
-
-	//s = s.advance( 2 );
-
+	std::cout << e._sym;
+	
 	//s = s.advance( 1 );
 
 	delete ms;

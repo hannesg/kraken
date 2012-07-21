@@ -1,6 +1,6 @@
 #ifndef KRAKEN_NODE_RESULT_H
 #define KRAKEN_NODE_RESULT_H
-#include "kraken/string.h"
+#include "kraken/decoder.h"
 #include "kraken/node.h"
 #include <cstring>
 #include <functional>
@@ -10,7 +10,7 @@ namespace Kraken {
  	public:
  		enum TYPE { SUCCESS, FAIL, ERROR };
     static const Result fail;
-    typedef std::function<const Node::Result(const Kraken::string)> fork_function ;
+    typedef std::function<const Node::Result(const Kraken::Decoder&, const char* const)> fork_function ;
  	private:
     TYPE _type;
     size_t _bytesize;
@@ -51,11 +51,11 @@ namespace Kraken {
     inline const bool hasFork() const {
       return _fork != nullptr;
     }
-    inline const Result retry(Kraken::string s){
+    inline const Result retry(const Kraken::Decoder& d, const char* const c){
       if( !hasFork() ){
         return fail;
       }
-      return _fork(s);
+      return _fork(d,c);
     }
     inline const bool isFail() const{
       return _type == FAIL;

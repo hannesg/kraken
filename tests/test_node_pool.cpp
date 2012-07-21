@@ -14,7 +14,7 @@ std::list<Kraken::Node*> _nodes;
 
 public:
   virtual void each_ref( const std::function<void(const Kraken::Node*)>& ) const;
-  virtual const Kraken::Node::Result traverse( const Kraken::string ) const;
+  virtual const Kraken::Node::Result traverse( const Kraken::Decoder&, const char* const) const;
   RealNode* add(Kraken::Node* node);
   ~RealNode();
 
@@ -25,7 +25,7 @@ void RealNode::each_ref( const std::function<void(const Kraken::Node*)>& fn ) co
   return ;
 }
 
-const Kraken::Node::Result RealNode::traverse( const Kraken::string ) const {
+const Kraken::Node::Result RealNode::traverse( const Kraken::Decoder&, const char* const ) const {
   return Kraken::Node::Result::fail;
 }
 

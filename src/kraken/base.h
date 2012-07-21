@@ -1,6 +1,7 @@
 #ifndef KRAKEN_BASE_H
 #define KRAKEN_BASE_H
 #include <string>
+#include <iostream>
 #include <climits>
 namespace Kraken {
 
@@ -28,10 +29,21 @@ namespace Kraken {
 
     static const symbol MAX;
     static const symbol MIN;
+    static const symbol EOS;
 
   };
 
+  std::ostream& operator<<(std::ostream&, symbol);
+
   typedef unsigned short tentacle_id;
+
+  struct element {
+    symbol _sym;
+    size_t _size;
+    bool _error;
+    element();
+    element(symbol, size_t = 1);
+  };
 
   enum encoding_id {
     GENERIC, UTF8

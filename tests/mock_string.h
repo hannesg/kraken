@@ -1,26 +1,37 @@
 #ifndef KRAKEN_MOCK_STRING_H
 #define KRAKEN_MOCK_STRING_H
 
-#include "kraken/string.h"
-class mock_string : public Kraken::string_private {
+#include "kraken/decoder.h"
 
-    Kraken::read* _read;
-    unsigned int _n;
-    bool _allocated;
+class MockString : public Kraken::Decoder {
 
-    mock_string( Kraken::read* read, unsigned int n );
+
+    Kraken::element* _read;
+    const unsigned int _n;
+
+    inline const bool valid(const char* const p) const {
+        return p >= reinterpret_cast<const char* const>(_read) &&
+               p <  reinterpret_cast<const char* const>(_read + _n ) &&
+             ( p -  reinterpret_cast<const char* const>(_read) ) % sizeof(Kraken::element) == 0;
+    }
 
 public:
 
-    mock_string( const std::initializer_list<Kraken::read> &r );
+    struct elem {
+        Kraken::symbol _sym;
+        bool _error;
+        elem( bool );
+        elem( Kraken::symbol );
+        elem( int );
+    };
 
-    virtual ~mock_string();
+    MockString( const std::initializer_list<elem> &r );
 
-    virtual Kraken::read read() const ;
-    virtual Kraken::string_private* advance(const size_t s) const ;
-    virtual bool valid() const ;
+    ~MockString();
 
-    bool allocated() const;
+    const Kraken::element read(const char* const) const;
+
+    operator const char* const () const;
 
 };
 

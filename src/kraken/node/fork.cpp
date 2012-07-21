@@ -7,7 +7,7 @@ void Node::Fork::each_ref( const std::function<void(const Node*)>& fun ) const {
 	if( _fork ) fun(_fork);
 };
 
-const Node::Result Node::Fork::traverse( const Kraken::string ) const {
+const Node::Result Node::Fork::traverse(const Kraken::Decoder&, const char* const) const {
 	if( _fork ){
 		return Node::Result( _main, _fork->bindTraverse() );
 	}else{

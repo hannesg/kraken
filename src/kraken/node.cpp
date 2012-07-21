@@ -11,8 +11,12 @@ namespace Kraken {
     return this;
   }
 
-  const std::function<const Node::Result(Kraken::string)> Node::bindTraverse() const {
-    return std::bind( &Node::traverse, this, std::placeholders::_1 );
+  const Node::Result Node::traverse( const Kraken::Decoder&, const char* const ) const {
+    return Kraken::Node::Result::fail;
+  }
+
+  const std::function<const Node::Result(const Kraken::Decoder&, const char* const)> Node::bindTraverse() const {
+    return std::bind( &Node::traverse, this, std::placeholders::_1, std::placeholders::_2 );
   }
 
   Node::Pool& Node::Pool::operator<<(Node* node){
