@@ -7,6 +7,10 @@ namespace Kraken {
 		_head->acquire();
 	}
 
+	Attack::~Attack(){
+		_head->release();
+	}
+
 	bool Attack::step(){
 		Link* nxt = _head->next(_decoder);
 		if( nxt ){

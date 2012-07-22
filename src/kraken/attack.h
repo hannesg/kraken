@@ -15,6 +15,7 @@ namespace Kraken {
 
   public:
     Attack( const Kraken::The *kraken, const Kraken::Decoder& d, const char* const c);
+    ~Attack();
    	bool step();
 
   };

@@ -4,30 +4,31 @@
 #include "kraken/node.h"
 
 namespace Kraken {
-	class The;
+    class The;
 }
 
 #include "kraken/attack.h"
 
 namespace Kraken {
 
-	/**
-	 * my name is kraken - the kraken
-	 */
-	class The{
-    	Node::Pool _pool;
-    	Node *_root;
+    /**
+     * my name is kraken - the kraken
+     */
+    class The{
+        Node::Pool* _pool;
+        Node *_root;
     public:
-    	The();
-//    	Attack* attack( Kraken::string ) const;
-    	inline Node* root() const {
-    		return _root;
-    	}
-    	inline Node*& root(){
-    		return _root;
-    	}
+        The();
+        The( Node::Pool* pool, Node* root );
+//      Attack* attack( Kraken::string ) const;
+        inline Node* root() const {
+            return _root;
+        }
+        inline Node*& root(){
+            return _root;
+        }
 
-	};
+    };
 
 }
 
