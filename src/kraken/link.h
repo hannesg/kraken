@@ -1,6 +1,5 @@
 #ifndef KRAKEN_LINK_H
 #define KRAKEN_LINK_H
-#include <atomic>
 #include "kraken/decoder.h"
 #include "kraken/node/result.h"
 namespace Kraken {

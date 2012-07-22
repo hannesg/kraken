@@ -24,7 +24,7 @@ namespace Kraken {
 		_refs++;
 	}
 	void Link::release(){
-		if( _refs-- == 0 ){
+		if( _refs-- == 1 ){
 			delete this;
 		}
 	}
