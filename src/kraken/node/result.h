@@ -57,6 +57,9 @@ namespace Kraken {
       }
       return _fork(d,c);
     }
+    inline const TYPE type() const{
+      return _type;
+    }
     inline const bool isFail() const{
       return _type == FAIL;
     }

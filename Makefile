@@ -44,10 +44,10 @@ build/test_node_map.o: tests/test_node_map.cpp tests/mock_string.h src/kraken/no
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests tests/test_node_map.cpp -o build/test_node_map.o
 ./test_node_map: build/test_node_map.o build/mock_string.o build/kraken/node/map.o build/kraken/node/terminal.o src/kraken/decoder.h build/kraken/base.o build/kraken/node.o src/kraken/range_map.h src/kraken/range_set.h build/kraken/node/result.o build/kraken/visitor.o
 	g++  -pthread -Wall -std=c++0x build/test_node_map.o build/mock_string.o build/kraken/node/map.o build/kraken/node/terminal.o build/kraken/base.o build/kraken/node.o build/kraken/node/result.o build/kraken/visitor.o  -o test_node_map
-build/test_attack.o: tests/test_attack.cpp src/kraken/base.h tests/mock_string.h
+build/test_attack.o: tests/test_attack.cpp src/kraken/base.h tests/mock_string.h src/kraken/attack.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests tests/test_attack.cpp -o build/test_attack.o
-./test_attack: build/test_attack.o build/kraken/base.o build/mock_string.o src/kraken/decoder.h
-	g++  -pthread -Wall -std=c++0x build/test_attack.o build/kraken/base.o build/mock_string.o  -o test_attack
+./test_attack: build/test_attack.o build/kraken/base.o build/mock_string.o build/kraken/attack.o src/kraken/decoder.h build/kraken.o build/kraken/node.o build/kraken/link.o build/kraken/the.o build/kraken/visitor.o build/kraken/node/result.o
+	g++  -pthread -Wall -std=c++0x build/test_attack.o build/kraken/base.o build/mock_string.o build/kraken/attack.o build/kraken.o build/kraken/node.o build/kraken/link.o build/kraken/the.o build/kraken/visitor.o build/kraken/node/result.o  -o test_attack
 build/test_token.o: tests/test_token.cpp src/kraken/token.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests tests/test_token.cpp -o build/test_token.o
 ./test_token: build/test_token.o build/kraken/token.o build/kraken/base.o build/kraken/node/map.o build/kraken/node/placeholder.o build/kraken/node/replacer.o src/kraken/range_map.h build/kraken/node.o src/kraken/range_set.h build/kraken/node/result.o build/kraken/visitor.o src/kraken/decoder.h

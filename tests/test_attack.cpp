@@ -1,5 +1,6 @@
 #include "kraken/base.h"
 #include "mock_string.h"
+#include "kraken/attack.h"
 #include <iostream>
 #include <array>
 

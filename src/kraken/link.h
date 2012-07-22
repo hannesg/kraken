@@ -1,6 +1,7 @@
 #ifndef KRAKEN_LINK_H
 #define KRAKEN_LINK_H
 #include <atomic>
+#include "kraken/decoder.h"
 #include "kraken/node/result.h"
 namespace Kraken {
 
@@ -9,15 +10,19 @@ namespace Kraken {
 	class Link {
 		Node::Result _result;
 		Link* _parent;
+		const char* _string;
 		volatile unsigned int _refs;
 	public:
-		Link(Link*);
-		Link(Link*, const Node::Result&);
-		explicit Link();
-		Link(const Node::Result&);
+		Link(Link* const, const Node::Result&);
+		Link(const char* string, const Node::Result&);
 		~Link();
+		inline Node::Result& result(){
+			return _result;
+		}
 		void acquire();
 		void release();
+
+		Link* next(const Kraken::Decoder&);
 	};
 
 }
