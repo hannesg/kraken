@@ -9,8 +9,8 @@ void release_link(Kraken::Link* lnk){
 }
 
 void test_link(){
-	Kraken::Link* root = new Kraken::Link();
-	Kraken::Link* lnk = new Kraken::Link(root);
+	Kraken::Link* root = new Kraken::Link("","");
+	Kraken::Link* lnk = new Kraken::Link(root,"");
 	root->release();
 	std::vector<std::thread*> trd;
 

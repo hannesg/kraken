@@ -1,6 +1,6 @@
 build/kraken.o: src/kraken.cpp src/kraken.h src/kraken/the.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken.cpp -o build/kraken.o
-build/kraken/link.o: src/kraken/link.cpp src/kraken/link.h src/kraken/node/result.h
+build/kraken/link.o: src/kraken/link.cpp src/kraken/link.h src/kraken/decoder.h src/kraken/node/result.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/link.cpp -o build/kraken/link.o
 build/kraken/visitor.o: src/kraken/visitor.cpp src/kraken/visitor.h src/kraken/node.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/visitor.cpp -o build/kraken/visitor.o
@@ -54,8 +54,8 @@ build/test_token.o: tests/test_token.cpp src/kraken/token.h
 	g++  -pthread -Wall -std=c++0x build/test_token.o build/kraken/token.o build/kraken/base.o build/kraken/node/map.o build/kraken/node/placeholder.o build/kraken/node/replacer.o build/kraken/node.o build/kraken/node/result.o build/kraken/visitor.o  -o test_token
 build/test_link.o: tests/test_link.cpp src/kraken/link.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests tests/test_link.cpp -o build/test_link.o
-./test_link: build/test_link.o build/kraken/link.o build/kraken/node/result.o src/kraken/decoder.h build/kraken/node.o build/kraken/base.o build/kraken/visitor.o
-	g++  -pthread -Wall -std=c++0x build/test_link.o build/kraken/link.o build/kraken/node/result.o build/kraken/node.o build/kraken/base.o build/kraken/visitor.o  -o test_link
+./test_link: build/test_link.o build/kraken/link.o src/kraken/decoder.h build/kraken/node/result.o build/kraken/base.o build/kraken/node.o build/kraken/visitor.o
+	g++  -pthread -Wall -std=c++0x build/test_link.o build/kraken/link.o build/kraken/node/result.o build/kraken/base.o build/kraken/node.o build/kraken/visitor.o  -o test_link
 all: ./test_node_result ./test_node_pool ./test_range_map ./test_node_map ./test_attack ./test_token ./test_link
 clean: 
 	rm -rf ./test_node_result ./test_node_pool ./test_range_map ./test_node_map ./test_attack ./test_token ./test_link build/kraken.o build/kraken/link.o build/kraken/visitor.o build/kraken/the.o build/kraken/attack.o build/kraken/node.o build/kraken/node/placeholder.o build/kraken/node/result.o build/kraken/node/fork.o build/kraken/node/terminal.o build/kraken/node/replacer.o build/kraken/node/map.o build/kraken/token.o build/kraken/base.o build/mock_string.o
