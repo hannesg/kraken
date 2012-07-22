@@ -11,10 +11,9 @@ void release_link(Kraken::Link* lnk){
 void test_link(){
 	Kraken::Link* root = new Kraken::Link("","");
 	Kraken::Link* lnk = new Kraken::Link(root,"");
-	root->release();
 	std::vector<std::thread*> trd;
 
-	for( int i = 0 ; i < 19 ; i++ ){
+	for( int i = 0 ; i < 20 ; i++ ){
 		lnk->acquire();
 	}
 	for( int i = 0 ; i < 5 ; i++ ){
