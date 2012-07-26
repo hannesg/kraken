@@ -23,4 +23,8 @@ namespace Kraken {
 		}
 	}
 
+	Link* Attack::head() const {
+		return _head;
+	}
+
 }

@@ -1,4 +1,6 @@
 #include "kraken/token.h"
+#include "kraken/node.h"
+#include "kraken/node/terminal.h"
 #include <cstdio>
 int main(int argc, char** argv){
 
@@ -12,6 +14,12 @@ int main(int argc, char** argv){
   });
 
   std::cout << t->inspect();
+
+  Kraken::Node::Pool pool;
+
+  Kraken::Node* terminal = pool.make<Kraken::Node::Terminal>(0);
+  Kraken::Node* node = t->toNode(pool, terminal);
+
 
   delete t;
 

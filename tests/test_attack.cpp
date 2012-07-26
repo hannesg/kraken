@@ -10,14 +10,17 @@
 void test_attack1(){
 	Kraken::Node::Pool pool;
 	Kraken::Node::Map* root = pool.make<Kraken::Node::Map>();
-	root->set(5,10, pool.make<Kraken::Node::Terminal>(0) );
+	Kraken::Node* term;
+	root->set(5,10, term = pool.make<Kraken::Node::Terminal>(0) );
 	root->set(11, 20, pool.make<Kraken::Node::Terminal>(1) );
 	Kraken::The the = Kraken::The( &pool, root );
 
 	MockString ms = { 7 };
 
 	Kraken::Attack attack = Kraken::Attack( &the, ms, ms );
+	attack.step();
 
+	std::cout << term << " " << attack.head()->result().next();
 
 }
 
