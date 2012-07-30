@@ -14,10 +14,42 @@ namespace Kraken {
     const Kraken::Decoder& _decoder;
 
   public:
-    Attack( const Kraken::The *kraken, const Kraken::Decoder& d, const char* const c);
-    ~Attack();
-   	bool step();
-   	Link* head() const;
+    inline Attack( const Kraken::The *kraken, const Kraken::Decoder& d, const char* const c) :
+      _kraken(kraken), _head(nullptr), _decoder(d) {
+        _head = new Link(c, Node::Result(kraken->root()));
+        _head->acquire();
+    }
+    inline ~Attack(){
+      _head->release();
+    }
+    inline bool step(){
+      Link* nxt = _head->next(_decoder);
+      if( nxt ){
+        nxt->acquire();
+        _head->release();
+        _head = nxt;
+        return true;
+      }else{
+        return false;
+      }
+    }
+    inline void attack(){
+      bool go = true;
+      while( true ){
+        go = step();
+        if( !go ) return ;
+        if( found() ) return ;
+      }
+    }
+    inline bool found() const{
+      return _head->isTerminal();
+    }
+    inline const Link* head() const{
+      return _head;
+    }
+    inline Link* head() {
+      return _head;
+    }
 
   };
 

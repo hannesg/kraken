@@ -24,6 +24,10 @@ namespace Kraken {
     return *this;
   }
 
+  bool Node::isTerminal() const {
+    return false;
+  }
+
   void Node::Pool::gc(Node* root){
     Visitor vs;
     vs.start( root );

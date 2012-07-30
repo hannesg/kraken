@@ -72,6 +72,9 @@ namespace Kraken {
     inline operator bool() const{
       return _type == SUCCESS;
     }
+    inline bool isTerminal() const{
+      return isSuccess() && _next->isTerminal();
+    }
   };
 
 }

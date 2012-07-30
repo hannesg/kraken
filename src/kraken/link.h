@@ -15,8 +15,14 @@ namespace Kraken {
 		Link(Link* const, const Node::Result&);
 		Link(const char* string, const Node::Result&);
 		~Link();
+		inline const Node::Result& result() const{
+			return _result;
+		}
 		inline Node::Result& result(){
 			return _result;
+		}
+		inline bool isTerminal() const{
+			return _result.isTerminal();
 		}
 		void acquire();
 		void release();
