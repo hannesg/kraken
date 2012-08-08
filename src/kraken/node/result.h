@@ -35,8 +35,6 @@ namespace Kraken {
     Result( std::string );
     Result( const char* );
 
-    Result( std::nullptr_t );
-
     static const Result& fail();
     static const Result& success();
 
@@ -76,6 +74,9 @@ namespace Kraken {
     }
     inline const bool isSuccess() const{
       return _type == SUCCESS;
+    }
+    inline const bool isDeadEnd() const {
+      return _type != CONTINUATION;
     }
     inline operator bool() const{
       return _type == CONTINUATION;

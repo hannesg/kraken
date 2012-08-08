@@ -50,14 +50,6 @@ Node::Result::Result( const char* str ) :
   _fork(){
 }
 
-Node::Result::Result( std::nullptr_t ) :
-  _type(FAIL),
-  _bytesize(0),
-  _error(),
-  _next(nullptr),
-  _fork() {
-}
-
 const Node::Result& Node::Result::fail(){
   static const Node::Result fail(FAIL);
   return fail;
