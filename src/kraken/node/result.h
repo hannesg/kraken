@@ -6,18 +6,21 @@
 #include <functional>
 namespace Kraken {
 
- 	class Node::Result{
- 	public:
- 		enum TYPE { SUCCESS, FAIL, ERROR };
-    static const Result fail;
+  class Node::Result{
+  public:
+    enum TYPE { SUCCESS, CONTINUATION, FAIL, ERROR };
+
     typedef std::function<const Node::Result(const Kraken::Decoder&, const char* const)> fork_function ;
- 	private:
+  private:
     TYPE _type;
     size_t _bytesize;
     std::string _error;
     Node* _next;
     fork_function _fork;
     // TODO: captures!
+
+    Result( TYPE, size_t = 0, std::string = 0, Node* = nullptr, fork_function = fork_function() );
+
   public:
     // Found something:
     Result( Node* , size_t = 0);
@@ -31,9 +34,11 @@ namespace Kraken {
     // Error with description:
     Result( std::string );
     Result( const char* );
-    
-    // Didn't find anything:
+
     Result( std::nullptr_t );
+
+    static const Result& fail();
+    static const Result& success();
 
     ~Result(){};
     inline const size_t bytesize() const{
@@ -53,7 +58,7 @@ namespace Kraken {
     }
     inline const Result retry(const Kraken::Decoder& d, const char* const c){
       if( !hasFork() ){
-        return fail;
+        return fail();
       }
       return _fork(d,c);
     }
@@ -66,14 +71,14 @@ namespace Kraken {
     inline const bool isError() const{
       return _type == ERROR;
     }
+    inline const bool isContinuation() const{
+      return _type == CONTINUATION;
+    }
     inline const bool isSuccess() const{
       return _type == SUCCESS;
     }
     inline operator bool() const{
-      return _type == SUCCESS;
-    }
-    inline bool isTerminal() const{
-      return isSuccess() && _next->isTerminal();
+      return _type == CONTINUATION;
     }
   };
 

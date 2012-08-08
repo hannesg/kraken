@@ -42,7 +42,7 @@ namespace Kraken {
       }
     }
     inline bool found() const{
-      return _head->isTerminal();
+      return _head->isSuccess();
     }
     inline const Link* head() const{
       return _head;

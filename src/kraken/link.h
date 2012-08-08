@@ -21,8 +21,8 @@ namespace Kraken {
 		inline Node::Result& result(){
 			return _result;
 		}
-		inline bool isTerminal() const{
-			return _result.isTerminal();
+		inline bool isSuccess() const{
+			return _result.isSuccess();
 		}
 		void acquire();
 		void release();

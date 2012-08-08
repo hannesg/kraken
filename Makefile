@@ -4,7 +4,7 @@ build/kraken/link.o: src/kraken/link.cpp src/kraken/link.h src/kraken/decoder.h 
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/link.cpp -o build/kraken/link.o
 build/kraken/visitor.o: src/kraken/visitor.cpp src/kraken/visitor.h src/kraken/node.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/visitor.cpp -o build/kraken/visitor.o
-build/kraken/the.o: src/kraken/the.cpp src/kraken/node.h src/kraken/attack.h src/kraken/the.h
+build/kraken/the.o: src/kraken/the.cpp src/kraken/node.h src/kraken/the.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/the.cpp -o build/kraken/the.o
 build/kraken/attack.o: src/kraken/attack.cpp src/kraken.h src/kraken/node.h src/kraken/link.h src/kraken/the.h src/kraken/attack.h
 	g++ -c  -pthread -Wall -std=c++0x -Isrc -Itests src/kraken/attack.cpp -o build/kraken/attack.o

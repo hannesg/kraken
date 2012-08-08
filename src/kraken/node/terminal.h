@@ -10,8 +10,7 @@ namespace Kraken {
     tentacle_id _tentacle;
   public:
     Terminal(tentacle_id);
-    bool isTerminal() const;
-    tentacle_id endingTentacle() const;
+    const Result traverse( const Kraken::Decoder& , const char* const ) const;
   };
 
 }

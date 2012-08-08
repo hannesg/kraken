@@ -26,7 +26,7 @@ void RealNode::each_ref( const std::function<void(const Kraken::Node*)>& fn ) co
 }
 
 const Kraken::Node::Result RealNode::traverse( const Kraken::Decoder&, const char* const ) const {
-  return Kraken::Node::Result::fail;
+  return Kraken::Node::Result::fail();
 }
 
 RealNode::~RealNode(){

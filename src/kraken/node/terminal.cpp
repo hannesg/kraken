@@ -4,13 +4,8 @@ namespace Kraken {
 Node::Terminal::Terminal( tentacle_id tentacle ) : _tentacle(tentacle) {
 }
 
-bool Node::Terminal::isTerminal() const {
-  return true;
+const Node::Result Node::Terminal::traverse( const Kraken::Decoder& , const char* const ) const {
+  return Node::Result::success();
 }
-
-tentacle_id Node::Terminal::endingTentacle() const {
-  return _tentacle;
-}
-
 
 }

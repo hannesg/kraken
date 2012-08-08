@@ -11,10 +11,10 @@ void test_node_map1(){
 	node->set( 10, 20, pool.make<Kraken::Node::Terminal>(1) );
 	Kraken::Node::Result result = node->traverse(s, s);
 
-	if( result.isSuccess() ){
+	if( result.isContinuation() ){
 		std::cout << ".";
 	}else{
-		std::cout << "Result wasn't success.";
+		std::cout << "Result wasn't a continuation.";
 	}
 }
 

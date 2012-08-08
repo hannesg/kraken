@@ -71,8 +71,8 @@ void test_result_from_nullnode(){
 void test_result_from_node(){
 	Kraken::Node* node = new Kraken::Node::Terminal(0);
 	Kraken::Node::Result res = node;
-	if( !res.isSuccess() ){
-		std::cout << "Result from node should be a success\n";
+	if( !res.isContinuation() ){
+		std::cout << "Result from node should be a continuation\n";
 	}else{
 		std::cout << ".";
 	}
@@ -92,8 +92,8 @@ void test_result_from_node(){
 void test_result_from_node_and_fork(){
 	Kraken::Node* node = new Kraken::Node::Terminal(0);
 	Kraken::Node::Result res = Kraken::Node::Result( node, node->bindTraverse() );
-	if( !res.isSuccess() ){
-		std::cout << "Result from node and fork should be a success\n";
+	if( !res.isContinuation() ){
+		std::cout << "Result from node and fork should be a continuation\n";
 	}else{
 		std::cout << ".";
 	}

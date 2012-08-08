@@ -19,7 +19,6 @@ namespace Kraken {
     virtual const Result traverse( const Kraken::Decoder& , const char* const ) const;
     virtual Node* replace( Node* placeholder, Node* with );
     virtual const std::function<const Node::Result(const Kraken::Decoder&, const char* const)> bindTraverse() const;
-    virtual bool isTerminal() const;
 
     class Pool{
       std::list<Node*> _nodes;

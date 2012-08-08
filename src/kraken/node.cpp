@@ -12,7 +12,7 @@ namespace Kraken {
   }
 
   const Node::Result Node::traverse( const Kraken::Decoder&, const char* const ) const {
-    return Kraken::Node::Result::fail;
+    return Kraken::Node::Result::fail();
   }
 
   const std::function<const Node::Result(const Kraken::Decoder&, const char* const)> Node::bindTraverse() const {
@@ -22,10 +22,6 @@ namespace Kraken {
   Node::Pool& Node::Pool::operator<<(Node* node){
     _nodes.push_back(node);
     return *this;
-  }
-
-  bool Node::isTerminal() const {
-    return false;
   }
 
   void Node::Pool::gc(Node* root){
