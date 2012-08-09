@@ -159,7 +159,7 @@ class Hitman
     buf << 'clean: ' << "\n"
     buf << "\trm -rf " << ( executables + objects ).join(' ') << "\n"
     buf << 'Makefile: configure.rb src/* tests/*' << "\n"
-    buf << "\truby configure.rb > Makefile\n"
+    buf << "\twhich ruby > /dev/null && ruby configure.rb > Makefile\n"
     buf << ".PHONY: all clean\n"
 
     puts buf.join

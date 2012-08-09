@@ -60,5 +60,5 @@ all: ./test_node_result ./test_node_pool ./test_range_map ./test_node_map ./test
 clean: 
 	rm -rf ./test_node_result ./test_node_pool ./test_range_map ./test_node_map ./test_attack ./test_token ./test_link build/kraken.o build/kraken/link.o build/kraken/visitor.o build/kraken/the.o build/kraken/attack.o build/kraken/node.o build/kraken/node/placeholder.o build/kraken/node/result.o build/kraken/node/fork.o build/kraken/node/terminal.o build/kraken/node/replacer.o build/kraken/node/map.o build/kraken/token.o build/kraken/base.o build/mock_string.o
 Makefile: configure.rb src/* tests/*
-	ruby configure.rb > Makefile
+	which ruby > /dev/null && ruby configure.rb > Makefile
 .PHONY: all clean
