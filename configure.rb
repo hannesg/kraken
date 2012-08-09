@@ -145,9 +145,12 @@ class Hitman
 
   def echo!
     buf = []
+    dirs = Set.new
     @dependencies.each do |name,deps|
       if cpp? name
-        buf << o(name) << ': ' << [ cpp(name), *deps.map{|n| h(n) if h?(n) }.compact].join(' ') << "\n"
+        dstruct = File.dirname(o(name))
+        dirs << dstruct
+        buf << o(name) << ': ' << [ cpp(name), *deps.map{|n| h(n) if h?(n) }.compact, dstruct ].join(' ') << "\n"
         buf << "\tg++ -c " << cxx_cargs << ' ' << cpp(name) << ' -o ' << o(name) << "\n"
         if executable? name
           buf << bin(name) << ': ' << [ expand(name).map{|n| cpp?(n) ? o(n) : h(n) } ].join(' ') << "\n"
@@ -155,9 +158,14 @@ class Hitman
         end
       end
     end
+
+    dirs.each do | dir |
+      buf << dir << ': ' << "\n"
+      buf << "\tmkdir -p " << dir << "\n"
+    end
     buf << 'all: ' << executables.join(' ') << "\n"
     buf << 'clean: ' << "\n"
-    buf << "\trm -rf " << ( executables + objects ).join(' ') << "\n"
+    buf << "\trm -rf " << ( executables + objects + dirs.to_a ).join(' ') << "\n"
     buf << 'Makefile: configure.rb src/* tests/*' << "\n"
     buf << "\twhich ruby > /dev/null && ruby configure.rb > Makefile\n"
     buf << "run_tests: all\n"
