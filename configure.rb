@@ -160,7 +160,10 @@ class Hitman
     buf << "\trm -rf " << ( executables + objects ).join(' ') << "\n"
     buf << 'Makefile: configure.rb src/* tests/*' << "\n"
     buf << "\twhich ruby > /dev/null && ruby configure.rb > Makefile\n"
-    buf << ".PHONY: all clean\n"
+    buf << "run_tests: all\n"
+    buf << "\tls | grep test_ | sed 's/test_/valgrind\\ -q\\ \\.\\/test_/' | sh\n"
+    buf << "tests: clean run_tests\n"
+    buf << ".PHONY: all clean tests run_tests\n"
 
     puts buf.join
   end
