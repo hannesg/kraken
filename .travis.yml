@@ -1,2 +1,2 @@
 language: "cpp"
-rake: "make tests"
+script: "make tests"
