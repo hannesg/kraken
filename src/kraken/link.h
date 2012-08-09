@@ -11,6 +11,8 @@ namespace Kraken {
 		Link* _parent;
 		const char* _string;
 		volatile unsigned int _refs;
+		Link(Link* const);
+		Link& operator=(Link&);
 	public:
 		Link(Link* const, const Node::Result&);
 		Link(const char* string, const Node::Result&);
